@@ -5,14 +5,17 @@ import com.kamilh.gotcharacters.util.AppDispatchers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.withContext
 
 abstract class ScopedViewModel constructor(
-    appDispatchers: AppDispatchers
+    protected val appDispatchers: AppDispatchers
 ) : ViewModel() {
 
     private val job = SupervisorJob()
 
     val scope: CoroutineScope = CoroutineScope(appDispatchers.io + job)
+
+    protected suspend fun updateUi(block: () -> Unit) = withContext(appDispatchers.main) { block() }
 
     override fun onCleared() {
         super.onCleared()

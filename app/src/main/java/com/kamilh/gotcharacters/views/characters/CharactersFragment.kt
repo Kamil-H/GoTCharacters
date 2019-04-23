@@ -27,7 +27,7 @@ class CharactersFragment : BaseFragment() {
     }
 
     private fun setUpView() {
-        view?.setOnClickListener { viewModel.onRowClicked(0) }
+        view?.setOnClickListener { viewModel.onLoadMore() }
     }
 
     private fun setUpObservables() {

@@ -18,7 +18,7 @@ object RemoteModule {
 
     @Provides @Singleton @JvmStatic
     fun provideApi(okHttpClient: OkHttpClient, gson: Gson): IceAndFireApi = retrofitCreator(
-            "https://www.anapioficeandfire.com/api/characters/",
+            "https://www.anapioficeandfire.com/api/",
             okHttpClient,
             gson
     ).create(IceAndFireApi::class.java)
