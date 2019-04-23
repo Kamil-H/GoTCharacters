@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/charactersFragment"
         android:name="com.kamilh.gotcharacters.views.characters.CharactersFragment"
-        android:label="CharactersFragment"
+        android:label="@string/Characters_title"
         tools:layout="@layout/fragment_characters">
         <action
             android:id="@+id/action_charactersFragment_to_characterDetailsFragment"
@@ -23,6 +23,6 @@
     <fragment
         android:id="@+id/characterDetailsFragment"
         android:name="com.kamilh.gotcharacters.views.character_details.CharacterDetailsFragment"
-        android:label="CharacterDetailsFragment"
+        android:label="@string/CharacterDetails_title"
         tools:layout="@layout/fragment_character_details" />
 </navigation>

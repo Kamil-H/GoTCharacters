@@ -11,13 +11,13 @@ import javax.inject.Inject
 @ActivityScope
 class GetCharacters @Inject constructor(
     private val charactersRepository: CharactersRepository
-) : Interactor<PaginationRequest, Resource<PaginationResponse<Character>>> {
+) : Interactor<PaginationRequest<Character>, Resource<PaginationResponse<Character>>> {
 
-    override suspend fun invoke(params: PaginationRequest): Resource<PaginationResponse<Character>> {
+    override suspend fun invoke(params: PaginationRequest<Character>): Resource<PaginationResponse<Character>> {
         return when (val response = charactersRepository.get(params.pageSize, params.page)) {
             is Resource.Data -> Resource.Data(
                 PaginationResponse(
-                    list = response.result,
+                    responseList = response.result,
                     request = params
                 )
             )

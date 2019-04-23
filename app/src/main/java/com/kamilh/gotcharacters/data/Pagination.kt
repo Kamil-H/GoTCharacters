@@ -1,15 +1,25 @@
 package com.kamilh.gotcharacters.data
 
 data class PaginationResponse<T>(
-    val list: List<T>,
-    private val request: PaginationRequest
+    private val responseList: List<T>,
+    private val request: PaginationRequest<T>
 ) {
-    val canLoadMore = list.size == request.pageSize
-    val previousPage = PaginationRequest(if (request.page > 0) request.page - 1 else 0, request.pageSize)
-    val nextPage = PaginationRequest(if (canLoadMore) request.page + 1 else request.page, request.pageSize)
+    val list = request.list.union(responseList).toList()
+    val canLoadMore = responseList.size == request.pageSize
+    val previousPage = PaginationRequest(
+        page = if (request.page > 0) request.page - 1 else 0,
+        pageSize = request.pageSize,
+        list = list
+    )
+    val nextPage = PaginationRequest(
+        page = if (canLoadMore) request.page + 1 else request.page,
+        pageSize = request.pageSize,
+        list = list
+    )
 }
 
-data class PaginationRequest(
+data class PaginationRequest<T>(
     val page: Int,
-    val pageSize: Int = 20
+    val pageSize: Int = 20,
+    val list: List<T>
 )

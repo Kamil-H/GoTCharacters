@@ -32,7 +32,6 @@ class MainActivity : BaseActivity() {
         navController = findNavController(this, R.id.fragment)
 
         setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
         NavigationUI.setupActionBarWithNavController(this, navController)
 
         initObservables()

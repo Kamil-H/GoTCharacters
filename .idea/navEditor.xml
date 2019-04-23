@@ -31,7 +31,7 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_alarmsFragment_to_securityFlowFragment">
+                            <entry key="action_charactersFragment_to_characterDetailsFragment">
                               <value>
                                 <LayoutPositions />
                               </value>

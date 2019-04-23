@@ -1,15 +1,15 @@
 package com.kamilh.gotcharacters.views.characters
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.kamilh.gotcharacters.R
 import com.kamilh.gotcharacters.base.ScopedViewModel
-import com.kamilh.gotcharacters.data.Character
-import com.kamilh.gotcharacters.data.Navigation
-import com.kamilh.gotcharacters.data.PaginationRequest
-import com.kamilh.gotcharacters.data.PaginationResponse
+import com.kamilh.gotcharacters.custom_views.ItemView
+import com.kamilh.gotcharacters.data.*
+import com.kamilh.gotcharacters.data.mapper.CharacterToItemView
 import com.kamilh.gotcharacters.di.AppEventBus
 import com.kamilh.gotcharacters.interactors.GetCharacters
+import com.kamilh.gotcharacters.repository.RepositoryError
 import com.kamilh.gotcharacters.repository.Resource
 import com.kamilh.gotcharacters.util.AppDispatchers
 import com.kamilh.gotcharacters.util.ResourceProvider
@@ -20,44 +20,50 @@ class CharactersViewModel @Inject constructor(
     appDispatchers: AppDispatchers,
     private val appEventBus: AppEventBus,
     private val resourceProvider: ResourceProvider,
-    private val getCharacters: GetCharacters
+    private val getCharacters: GetCharacters,
+    private val characterToItemView: CharacterToItemView
 ) : ScopedViewModel(appDispatchers) {
 
     private val _isLoading = MutableLiveData<Boolean>()
+    private val _items = MutableLiveData<List<ItemView.Configuration>>()
 
     val isLoading: LiveData<Boolean> = _isLoading
+    val items: LiveData<List<ItemView.Configuration>> = _items
 
-    private val list = mutableListOf<Character>()
-    private val firstPage = PaginationRequest(page = 0)
+    private val firstPage = PaginationRequest(page = 1, list = listOf<Character>())
     private var response: PaginationResponse<Character>? = null
 
     init {
         load(firstPage)
     }
 
-    private fun load(request: PaginationRequest) {
+    private fun load(request: PaginationRequest<Character>) {
         scope.launch {
             updateUi { _isLoading.value = true }
             val resource = getCharacters.invoke(request)
             updateUi { _isLoading.value = false }
             when (resource) {
                 is Resource.Data -> onResponse(resource.result)
-                is Resource.Error -> print(resource.repositoryError.message(resourceProvider))
+                is Resource.Error -> updateUi { appEventBus.value = handle(resource.repositoryError) }
             }
         }
     }
 
     private suspend fun onResponse(response: PaginationResponse<Character>) {
         this.response = response
-        list.addAll(response.list)
-        Log.i("onResponse", list.size.toString())
+        val items = response.list.map { characterToItemView.map(it) }
         updateUi {
-
+            _items.value = items
         }
     }
 
-    fun onRowClicked(i: Int) {
-        val character = list.getOrNull(i)
+    private fun handle(repositoryError: RepositoryError) = Alert(
+        title = resourceProvider.getString(R.string.ErrorTitle),
+        message = repositoryError.message(resourceProvider)
+    ).addOkAction { }
+
+    fun onItemClicked(item: ItemView.Configuration) {
+        val character = response?.list?.firstOrNull { it.name == item.id }
         if (character != null) {
             appEventBus.value = Navigation.Main.DetailsRequested(character.name)
         } else {

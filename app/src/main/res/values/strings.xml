@@ -5,4 +5,6 @@
     <string name="RepositoryError_disc">An error occurred while reading from disc</string>
     <string name="RepositoryError_parse">It was impossible to retrieve data from file</string>
     <string name="ErrorTitle">Problem occurred</string>
+    <string name="CharacterDetails_title">Character details</string>
+    <string name="Characters_title">GoT characters</string>
 </resources>
