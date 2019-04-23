@@ -25,4 +25,11 @@ class CharactersCachedRepository @Inject constructor(
             )
         )
     }
+
+    override suspend fun getByName(name: String): Resource<Character> {
+        return when (val resource = retrofitRunner.executeForResponse(characterResponseToCharacter.toListMapper(), iceAndFireApi.filterByNameAsync(name))) {
+            is Resource.Data -> Resource.Data(resource.result.first())
+            is Resource.Error -> resource
+        }
+    }
 }

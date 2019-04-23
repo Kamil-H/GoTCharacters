@@ -2,14 +2,15 @@ package com.kamilh.gotcharacters.views.characters
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.kamilh.gotcharacters.R
 import com.kamilh.gotcharacters.base.ScopedViewModel
 import com.kamilh.gotcharacters.custom_views.ItemView
-import com.kamilh.gotcharacters.data.*
+import com.kamilh.gotcharacters.data.Character
+import com.kamilh.gotcharacters.data.Navigation
+import com.kamilh.gotcharacters.data.PaginationRequest
+import com.kamilh.gotcharacters.data.PaginationResponse
 import com.kamilh.gotcharacters.data.mapper.CharacterToItemView
 import com.kamilh.gotcharacters.di.AppEventBus
 import com.kamilh.gotcharacters.interactors.GetCharacters
-import com.kamilh.gotcharacters.repository.RepositoryError
 import com.kamilh.gotcharacters.repository.Resource
 import com.kamilh.gotcharacters.util.AppDispatchers
 import com.kamilh.gotcharacters.util.ResourceProvider
@@ -44,7 +45,7 @@ class CharactersViewModel @Inject constructor(
             updateUi { _isLoading.value = false }
             when (resource) {
                 is Resource.Data -> onResponse(resource.result)
-                is Resource.Error -> updateUi { appEventBus.value = handle(resource.repositoryError) }
+                is Resource.Error -> updateUi { appEventBus.value = handle(resourceProvider, resource.repositoryError) }
             }
         }
     }
@@ -57,17 +58,9 @@ class CharactersViewModel @Inject constructor(
         }
     }
 
-    private fun handle(repositoryError: RepositoryError) = Alert(
-        title = resourceProvider.getString(R.string.ErrorTitle),
-        message = repositoryError.message(resourceProvider)
-    ).addOkAction { }
-
     fun onItemClicked(item: ItemView.Configuration) {
-        val character = response?.list?.firstOrNull { it.name == item.id }
-        if (character != null) {
-            appEventBus.value = Navigation.Main.DetailsRequested(character.name)
-        } else {
-            // TODO: Show error
+        response?.list?.firstOrNull { it.id == item.id }?.let {
+            appEventBus.value = Navigation.Main.DetailsRequested(it.name)
         }
     }
 

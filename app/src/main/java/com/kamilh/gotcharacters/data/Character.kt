@@ -1,6 +1,7 @@
 package com.kamilh.gotcharacters.data
 
 data class Character(
+    val id: Int,
     val url: String,
     val name: String,
     val gender: String,
@@ -13,7 +14,7 @@ data class Character(
     val mother: String,
     val spouse: String,
     val allegiances: List<String>,
-    val books: List<String>,
+    val books: List<Int>,
     val povBooks: List<String>,
     val tvSeries: List<String>,
     val playedBy: List<String>

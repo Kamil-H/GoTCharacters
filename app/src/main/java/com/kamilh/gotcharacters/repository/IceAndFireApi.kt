@@ -12,4 +12,9 @@ interface IceAndFireApi {
         @Query("page") page: Int,
         @Query("pageSize") pageSize: Int
     ): Deferred<Response<List<CharacterResponse>>>
+
+    @GET("characters")
+    fun filterByNameAsync(
+        @Query("name") name: String
+    ): Deferred<Response<List<CharacterResponse>>>
 }

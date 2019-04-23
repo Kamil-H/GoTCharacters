@@ -47,8 +47,4 @@ class CharactersFragment : BaseFragment() {
         }
         observeNotNull(viewModel.items, adapter::submitList)
     }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-    }
 }

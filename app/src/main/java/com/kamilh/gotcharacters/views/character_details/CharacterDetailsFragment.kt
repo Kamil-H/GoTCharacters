@@ -6,11 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.kamilh.gotcharacters.R
 import com.kamilh.gotcharacters.base.BaseFragment
+import com.kamilh.gotcharacters.extensions.observeNotNull
 import kotlinx.android.parcel.Parcelize
+import kotlinx.android.synthetic.main.fragment_character_details.*
 import javax.inject.Inject
 
 class CharacterDetailsFragment : BaseFragment() {
@@ -25,18 +28,16 @@ class CharacterDetailsFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CharacterDetailsViewModel::class.java)
 
-        setUpView()
         setUpObservables()
-    }
 
-    private fun setUpView() {
+        viewModel.onArguments(arguments?.getParcelable("args") as Arguments)
     }
 
     private fun setUpObservables() {
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
+        observeNotNull(viewModel.isLoading) { progressBar.isVisible = it }
+        observeNotNull(viewModel.generalInfo) { generalInfoTitledPairListView.setUp(it) }
+        observeNotNull(viewModel.tvSeries) { tvSeriesTitledPairListView.setUp(it) }
+        observeNotNull(viewModel.playedBy) { playedByTitledPairListView.setUp(it) }
     }
 
     @Parcelize

@@ -7,4 +7,14 @@
     <string name="ErrorTitle">Problem occurred</string>
     <string name="CharacterDetails_title">Character details</string>
     <string name="Characters_title">GoT characters</string>
+    <string name="CharacterDetails_general_info_title">General info</string>
+    <string name="CharacterDetails_general_info_text">General info</string>
+    <string name="CharacterDetails_name_text">Name:</string>
+    <string name="CharacterDetails_culture_text">Culture:</string>
+    <string name="CharacterDetails_born_text">Born:</string>
+    <string name="CharacterDetails_died_text">Died:</string>
+    <string name="CharacterDetails_father_text">Father:</string>
+    <string name="CharacterDetails_mother_text">Mother:</string>
+    <string name="CharacterDetails_appearances_text">Appearances in TV shows</string>
+    <string name="CharacterDetails_played_by_text">Character played by</string>
 </resources>

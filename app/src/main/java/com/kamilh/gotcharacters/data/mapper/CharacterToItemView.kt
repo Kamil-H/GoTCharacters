@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class CharacterToItemView @Inject constructor() : Mapper<Character, ItemView.Configuration> {
     override fun map(from: Character) = ItemView.Configuration(
-        id = from.name,
+        id = from.id,
         upperText = from.gender,
         middleText = from.name,
         bottomText = bornDiedText(from)

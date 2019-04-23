@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import com.kamilh.gotcharacters.R
 import kotlinx.android.synthetic.main.view_item.view.*
 
@@ -15,6 +16,7 @@ class ItemView @JvmOverloads constructor(
         View.inflate(context, R.layout.view_item, this)
 
         orientation = VERTICAL
+        background = ContextCompat.getDrawable(context, R.color.colorPrimary)
 
         configuration?.let(this::setUp)
     }
@@ -26,12 +28,9 @@ class ItemView @JvmOverloads constructor(
     }
 
     data class Configuration(
-        val id: String,
+        val id: Int,
         val upperText: String,
         val middleText: String,
         val bottomText: String
-    ) {
-
-        fun toView(context: Context) = ItemView(context = context, configuration = this)
-    }
+    )
 }
