@@ -1,13 +1,9 @@
 package com.kamilh.gotcharacters.data
 
-sealed class AppEvent
+import com.kamilh.gotcharacters.R
+import com.kamilh.gotcharacters.views.character_details.CharacterDetailsFragment
 
-class Loading(val inProgress: Boolean): AppEvent() {
-    companion object {
-        val inProgress = Loading(inProgress = true)
-        val finished = Loading(inProgress = false)
-    }
-}
+sealed class AppEvent
 
 data class Alert(
     val title: String,
@@ -28,4 +24,20 @@ data class Alert(
     )
 }
 
-sealed class Navigation : AppEvent()
+sealed class Navigation : AppEvent() {
+
+    abstract val action: NavAction
+
+    sealed class Main : Navigation() {
+
+        class DetailsRequested(private val name: String) : Main() {
+            override val action: NavAction
+                get() = NavAction.Push(
+                    Direction(
+                        R.id.action_charactersFragment_to_characterDetailsFragment,
+                        args = CharacterDetailsFragment.Arguments(name).toBundle()
+                    )
+                )
+        }
+    }
+}

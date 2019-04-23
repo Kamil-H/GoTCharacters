@@ -15,12 +15,6 @@ class CharactersFragment : BaseFragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: CharactersViewModel
 
-    companion object {
-        fun newInstance(): CharactersFragment {
-            return CharactersFragment()
-        }
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
         inflater.inflate(R.layout.fragment_characters, container, false)
 
@@ -33,6 +27,7 @@ class CharactersFragment : BaseFragment() {
     }
 
     private fun setUpView() {
+        view?.setOnClickListener { viewModel.onRowClicked(0) }
     }
 
     private fun setUpObservables() {

@@ -3,6 +3,7 @@ package com.kamilh.gotcharacters.di
 import android.content.Context
 import com.kamilh.gotcharacters.GoTCharacters
 import com.kamilh.gotcharacters.repository.characters.CharactersCachedRepository
+import com.kamilh.gotcharacters.repository.characters.CharactersRepository
 import com.kamilh.gotcharacters.util.AppDispatchers
 import dagger.Module
 import dagger.Provides
@@ -27,6 +28,6 @@ object AppModule {
 
     @Provides
     @JvmStatic
-    fun bindUserRepository(charactersCachedRepository: CharactersCachedRepository): CharactersCachedRepository =
+    fun bindUserRepository(charactersCachedRepository: CharactersCachedRepository): CharactersRepository =
         charactersCachedRepository
 }
