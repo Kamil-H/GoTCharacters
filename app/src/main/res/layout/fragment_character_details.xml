@@ -29,12 +29,18 @@
             <com.kamilh.gotcharacters.custom_views.TitledPairListView
                 android:id="@+id/playedByTitledPairListView"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp" />
+
+            <com.kamilh.gotcharacters.custom_views.TitledPairListView
+                android:id="@+id/booksTitledPairListView"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/horizontalProgressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

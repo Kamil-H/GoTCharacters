@@ -2,21 +2,36 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    tools:parentTag="LinearLayout">
-
-    <TextView
-        android:id="@+id/titleTextView"
-        style="@style/TextBig"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:fontFamily="@font/lato_bold"
-        android:textColor="@color/orange"
-        tools:text="@string/CharacterDetails_general_info_title" />
+    tools:parentTag="FrameLayout">
 
     <LinearLayout
-        android:id="@+id/pairsContainer"
+        android:id="@+id/contentContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/titleTextView"
+            style="@style/TextBig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/lato_bold"
+            android:textColor="@color/orange"
+            tools:text="@string/CharacterDetails_general_info_title" />
+
+        <LinearLayout
+            android:id="@+id/pairsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone"
+        tools:visibility="visible" />
 </merge>

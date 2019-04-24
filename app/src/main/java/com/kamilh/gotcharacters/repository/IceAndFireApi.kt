@@ -1,9 +1,11 @@
 package com.kamilh.gotcharacters.repository
 
+import com.kamilh.gotcharacters.repository.books.model.BooksResponse
 import com.kamilh.gotcharacters.repository.characters.model.CharacterResponse
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface IceAndFireApi {
@@ -17,4 +19,9 @@ interface IceAndFireApi {
     fun filterByNameAsync(
         @Query("name") name: String
     ): Deferred<Response<List<CharacterResponse>>>
+
+    @GET("books/{id}")
+    fun bookById(
+        @Path("id") id: Int
+    ): Deferred<Response<BooksResponse>>
 }

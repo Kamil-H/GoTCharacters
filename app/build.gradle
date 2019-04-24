@@ -62,6 +62,8 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:${versions.retrofit}"
     implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:${versions.retrofit_coroutines_adapter}"
 
+    implementation "com.jakewharton.threetenabp:threetenabp:${versions.threetenabp}"
+
     implementation "com.facebook.stetho:stetho:${versions.stetho}"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"

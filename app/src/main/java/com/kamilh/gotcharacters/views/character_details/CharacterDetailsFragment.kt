@@ -34,10 +34,11 @@ class CharacterDetailsFragment : BaseFragment() {
     }
 
     private fun setUpObservables() {
-        observeNotNull(viewModel.isLoading) { progressBar.isVisible = it }
+        observeNotNull(viewModel.isLoading) { horizontalProgressBar.isVisible = it }
         observeNotNull(viewModel.generalInfo) { generalInfoTitledPairListView.setUp(it) }
         observeNotNull(viewModel.tvSeries) { tvSeriesTitledPairListView.setUp(it) }
         observeNotNull(viewModel.playedBy) { playedByTitledPairListView.setUp(it) }
+        observeNotNull(viewModel.books) { booksTitledPairListView.setUp(it) }
     }
 
     @Parcelize

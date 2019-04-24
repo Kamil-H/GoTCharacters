@@ -2,6 +2,8 @@ package com.kamilh.gotcharacters.di
 
 import android.content.Context
 import com.kamilh.gotcharacters.GoTCharacters
+import com.kamilh.gotcharacters.repository.books.BooksRemoteRepository
+import com.kamilh.gotcharacters.repository.books.BooksRepository
 import com.kamilh.gotcharacters.repository.characters.CharactersCachedRepository
 import com.kamilh.gotcharacters.repository.characters.CharactersRepository
 import com.kamilh.gotcharacters.util.AppDispatchers
@@ -28,6 +30,11 @@ object AppModule {
 
     @Provides
     @JvmStatic
-    fun bindUserRepository(charactersCachedRepository: CharactersCachedRepository): CharactersRepository =
+    fun bindCharactersRepository(charactersCachedRepository: CharactersCachedRepository): CharactersRepository =
         charactersCachedRepository
+
+    @Provides
+    @JvmStatic
+    fun bindBooksRepository(booksRemoteRepository: BooksRemoteRepository): BooksRepository =
+        booksRemoteRepository
 }
