@@ -42,6 +42,7 @@ dependencies {
     implementation "androidx.core:core-ktx:${versions.ktx}"
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${versions.coroutines}"
 
     implementation "androidx.lifecycle:lifecycle-runtime:${versions.arch_comp_lifecycle}"
     implementation "androidx.lifecycle:lifecycle-extensions:${versions.arch_comp_lifecycle}"
@@ -65,5 +66,10 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"
 
-    testImplementation "junit:junit:${versions.junit}"
+    testImplementation "junit:junit:${versions.test_junit}"
+    testImplementation "android.arch.core:core-testing:${versions.test_arch_core}"
+    testImplementation "org.mockito:mockito-core:${versions.test_mockito}"
+    testImplementation "org.mockito:mockito-inline:${versions.test_mockito_inline}"
+    androidTestImplementation "androidx.test:runner:${versions.test_runner}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${versions.test_espresso}"
 }
