@@ -10,18 +10,18 @@ import retrofit2.http.Query
 
 interface IceAndFireApi {
     @GET("characters")
-    fun getCharactersAsync(
+    suspend fun getCharacters(
         @Query("page") page: Int,
         @Query("pageSize") pageSize: Int
-    ): Deferred<Response<List<CharacterResponse>>>
+    ): Response<List<CharacterResponse>>
 
     @GET("characters")
-    fun filterByNameAsync(
+    suspend fun filterByName(
         @Query("name") name: String
-    ): Deferred<Response<List<CharacterResponse>>>
+    ): Response<List<CharacterResponse>>
 
     @GET("books/{id}")
-    fun bookById(
+    suspend fun bookById(
         @Path("id") id: Int
-    ): Deferred<Response<BooksResponse>>
+    ): Response<BooksResponse>
 }

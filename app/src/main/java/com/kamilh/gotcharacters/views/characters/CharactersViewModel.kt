@@ -41,7 +41,7 @@ class CharactersViewModel @Inject constructor(
     private fun load(request: PaginationRequest<Character>) {
         scope.launch {
             updateUi { _isLoading.value = true }
-            val resource = getCharacters.invoke(request)
+            val resource = getCharacters(request)
             updateUi { _isLoading.value = false }
             when (resource) {
                 is Resource.Data -> onResponse(resource.result)

@@ -1,19 +1,15 @@
 package com.kamilh.gotcharacters.interactors
 
 import com.kamilh.gotcharacters.data.Book
-import com.kamilh.gotcharacters.di.ActivityScope
 import com.kamilh.gotcharacters.repository.Resource
 import com.kamilh.gotcharacters.repository.books.BooksRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 
-@ActivityScope
-class GetBooksById @Inject constructor(
-    private val booksRepository: BooksRepository
-) : Interactor<GetBooksById.Params, Resource<List<Book>>> {
+class GetBooksById @Inject constructor(private val booksRepository: BooksRepository) {
 
-    override suspend fun invoke(params: Params): Resource<List<Book>> {
+    suspend operator fun invoke(params: Params): Resource<List<Book>> {
         return if (params.ids.isEmpty()) {
             Resource.Data(listOf())
         } else {

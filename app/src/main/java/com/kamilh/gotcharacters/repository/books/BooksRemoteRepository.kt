@@ -16,6 +16,8 @@ class BooksRemoteRepository @Inject constructor(
 ) : BooksRepository {
 
     override suspend fun getById(id: Int): Resource<Book> {
-        return retrofitRunner.executeForResponse(bookResponseToBook, iceAndFireApi.bookById(id))
+        return retrofitRunner.executeForResponse(bookResponseToBook) {
+            iceAndFireApi.bookById(id)
+        }
     }
 }

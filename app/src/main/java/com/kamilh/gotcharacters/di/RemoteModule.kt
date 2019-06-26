@@ -2,7 +2,6 @@ package com.kamilh.gotcharacters.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.kamilh.gotcharacters.BuildConfig
 import com.kamilh.gotcharacters.repository.IceAndFireApi
 import dagger.Module
@@ -37,7 +36,7 @@ object RemoteModule {
             .build()
     }
 
-    @Provides @Singleton @JvmStatic
+    @Provides @JvmStatic
     fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor().apply {
             if (BuildConfig.DEBUG) {
@@ -46,10 +45,10 @@ object RemoteModule {
         }
     }
 
-    private fun retrofitCreator(url: String, okHttpClient: OkHttpClient, gson: Gson) = Retrofit.Builder()
+    private fun retrofitCreator(url: String, okHttpClient: OkHttpClient, gson: Gson) =
+        Retrofit.Builder()
             .baseUrl(url)
             .client(okHttpClient)
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
 }

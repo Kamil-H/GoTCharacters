@@ -49,7 +49,7 @@ class CharacterDetailsViewModel @Inject constructor(
     private fun getCharacter(name: String) {
         scope.launch {
             updateUi { _isLoading.value = true }
-            val resource = getCharacterByName.invoke(GetCharacterByName.Params(name))
+            val resource = getCharacterByName(GetCharacterByName.Params(name))
             updateUi { _isLoading.value = false }
             when (resource) {
                 is Resource.Data -> onResponse(resource.result)
@@ -69,7 +69,7 @@ class CharacterDetailsViewModel @Inject constructor(
             _books.value = TitledPairListView.Configuration.loading()
         }
 
-        when (val booksResource = getBooksById.invoke(GetBooksById.Params(response.books))) {
+        when (val booksResource = getBooksById(GetBooksById.Params(response.books))) {
             is Resource.Data -> updateUi { _books.value = bookToTitledPairListView.map(booksResource.result) }
             is Resource.Error -> updateUi { appEventBus.value = handle(resourceProvider, booksResource.repositoryError) }
         }

@@ -48,7 +48,7 @@ class CharactersViewModelTest {
         val observer = mock<Observer<Boolean>>()
         val request = PaginationRequest<Character>(page = 1, pageSize = 20, list = listOf())
 
-        whenever(getCharacters.invoke(request)).thenReturn(any())
+        whenever(getCharacters(request)).thenReturn(any())
 
         charactersViewModel.onLoadMore()
 
