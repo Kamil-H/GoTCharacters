@@ -2,26 +2,29 @@ package com.kamilh.gotcharacters.views.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.NavController
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.ui.NavigationUI
 import com.kamilh.gotcharacters.R
 import com.kamilh.gotcharacters.base.BaseActivity
 import com.kamilh.gotcharacters.data.Alert
 import com.kamilh.gotcharacters.di.AppEventBus
 import com.kamilh.gotcharacters.extensions.observeNotNull
-import kotlinx.android.synthetic.main.activity_main.*
+import com.kamilh.gotcharacters.util.navigation.FragmentOwner
 import javax.inject.Inject
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), FragmentOwner {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject
     lateinit var appEventBus: AppEventBus
+    @Inject
+    lateinit var mainNavigationController: MainNavigationController
+
     private lateinit var viewModel: MainViewModel
-    private lateinit var navController: NavController
+
+    override val container = R.id.container
+    override val fragmentManager: FragmentManager = supportFragmentManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,10 +32,9 @@ class MainActivity : BaseActivity() {
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
 
-        navController = findNavController(this, R.id.fragment)
-
-        setSupportActionBar(toolbar)
-        NavigationUI.setupActionBarWithNavController(this, navController)
+        if (savedInstanceState == null) {
+            viewModel.checkState()
+        }
 
         initObservables()
     }
@@ -40,8 +42,7 @@ class MainActivity : BaseActivity() {
     private fun initObservables() {
         observeNotNull(appEventBus, viewModel::onAppEvent)
         observeNotNull(viewModel.alert, this::showDialog)
-        observeNotNull(viewModel.direction, navController::navigate)
-        observeNotNull(viewModel.shouldPop) { navController.popBackStack() }
+        observeNotNull(viewModel.mainNavigationEvent, mainNavigationController::handle)
     }
 
     private fun dialog(alert: Alert): AlertDialog {
@@ -73,5 +74,11 @@ class MainActivity : BaseActivity() {
         dialog(alert).show()
     }
 
-    override fun onSupportNavigateUp() = navController.navigateUp()
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount == 1) {
+            finish()
+        } else {
+            super.onBackPressed()
+        }
+    }
 }

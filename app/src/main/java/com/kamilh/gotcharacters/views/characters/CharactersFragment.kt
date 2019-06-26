@@ -21,6 +21,10 @@ class CharactersFragment : BaseFragment() {
     private lateinit var viewModel: CharactersViewModel
     private lateinit var adapter: ItemViewAdapter
 
+    companion object {
+        fun instance() = CharactersFragment()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
         inflater.inflate(R.layout.fragment_characters, container, false)
 
@@ -46,5 +50,6 @@ class CharactersFragment : BaseFragment() {
             progressBar.isVisible = it
         }
         observeNotNull(viewModel.items, adapter::submitList)
+        observeNotNull(viewModel.appToolbar) { appToolbar.setUp(it) }
     }
 }

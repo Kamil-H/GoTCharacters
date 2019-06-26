@@ -21,6 +21,12 @@ class CharacterDetailsFragment : BaseFragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: CharacterDetailsViewModel
 
+    companion object {
+        fun instance(arguments: Arguments) = CharacterDetailsFragment().apply {
+            setArguments(arguments.toBundle())
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
         inflater.inflate(R.layout.fragment_character_details, container, false)
 
@@ -39,6 +45,7 @@ class CharacterDetailsFragment : BaseFragment() {
         observeNotNull(viewModel.tvSeries) { tvSeriesTitledPairListView.setUp(it) }
         observeNotNull(viewModel.playedBy) { playedByTitledPairListView.setUp(it) }
         observeNotNull(viewModel.books) { booksTitledPairListView.setUp(it) }
+        observeNotNull(viewModel.appToolbar) { appToolbar.setUp(it) }
     }
 
     @Parcelize
@@ -46,6 +53,6 @@ class CharacterDetailsFragment : BaseFragment() {
         val name: String
     ) : Parcelable {
 
-        fun toBundle() = bundleOf(Pair("args", this))
+        fun toBundle() = bundleOf("args" to this)
     }
 }

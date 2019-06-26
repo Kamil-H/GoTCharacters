@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <com.kamilh.gotcharacters.custom_views.InfiniteRecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/appToolbar"
         android:scrollbars="vertical" />
 
     <ProgressBar
@@ -16,7 +17,13 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/appToolbar"
         android:indeterminate="true"
         android:visibility="visible"
         tools:visibility="visible" />
+
+    <com.kamilh.gotcharacters.custom_views.AppToolbar
+        android:id="@+id/appToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </RelativeLayout>

@@ -4,7 +4,6 @@ buildscript {
             'legacy' : '1.0.0',
             'appcompat' : '1.0.2',
             'arch_comp' : '2.0.0',
-            'nav_component' : '1.0.0',
             'ktx' : '1.0.2',
             'coroutines' : '1.1.0',
             'arch_comp_lifecycle': '2.0.0',

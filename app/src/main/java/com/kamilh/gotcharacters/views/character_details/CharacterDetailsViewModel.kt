@@ -2,24 +2,32 @@ package com.kamilh.gotcharacters.views.character_details
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.kamilh.gotcharacters.R
 import com.kamilh.gotcharacters.base.ScopedViewModel
+import com.kamilh.gotcharacters.custom_views.AppToolbar
 import com.kamilh.gotcharacters.custom_views.TitledPairListView
 import com.kamilh.gotcharacters.data.Character
+import com.kamilh.gotcharacters.data.Navigation
 import com.kamilh.gotcharacters.data.mapper.BookToTitledPairListView
 import com.kamilh.gotcharacters.data.mapper.CharacterToGeneralInfoTitledPairListView
 import com.kamilh.gotcharacters.data.mapper.CharacterToPlayedByTitledPairListView
 import com.kamilh.gotcharacters.data.mapper.CharacterToTvSeriesTitledPairListView
 import com.kamilh.gotcharacters.di.AppEventBus
+import com.kamilh.gotcharacters.extensions.appToolbarConfiguration
+import com.kamilh.gotcharacters.extensions.map
+import com.kamilh.gotcharacters.extensions.toAlert
 import com.kamilh.gotcharacters.interactors.GetBooksById
 import com.kamilh.gotcharacters.interactors.GetCharacterByName
 import com.kamilh.gotcharacters.repository.Resource
 import com.kamilh.gotcharacters.util.AppDispatchers
 import com.kamilh.gotcharacters.util.ResourceProvider
+import com.kamilh.gotcharacters.util.navigation.StackSizeProvider
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class CharacterDetailsViewModel @Inject constructor(
     appDispatchers: AppDispatchers,
+    stackSizeProvider: StackSizeProvider,
     private val appEventBus: AppEventBus,
     private val resourceProvider: ResourceProvider,
     private val getCharacterByName: GetCharacterByName,
@@ -41,6 +49,13 @@ class CharacterDetailsViewModel @Inject constructor(
     val tvSeries: LiveData<TitledPairListView.Configuration> = _tvSeries
     val playedBy: LiveData<TitledPairListView.Configuration> = _playedBy
     val books: LiveData<TitledPairListView.Configuration> = _books
+    val appToolbar: LiveData<AppToolbar.Configuration> = stackSizeProvider.stackSize.map {
+        appToolbarConfiguration(
+            stackSize = it,
+            title = resourceProvider.getString(R.string.CharacterDetails_title),
+            onBackCallback = { appEventBus.value = Navigation.Main.BackButtonClicked }
+        )
+    }
 
     fun onArguments(arguments: CharacterDetailsFragment.Arguments) {
         getCharacter(arguments.name)
@@ -53,7 +68,7 @@ class CharacterDetailsViewModel @Inject constructor(
             updateUi { _isLoading.value = false }
             when (resource) {
                 is Resource.Data -> onResponse(resource.result)
-                is Resource.Error -> updateUi { appEventBus.value = handle(resourceProvider, resource.repositoryError) }
+                is Resource.Error -> updateUi { appEventBus.value = resource.repositoryError.toAlert(resourceProvider) }
             }
         }
     }
@@ -71,7 +86,7 @@ class CharacterDetailsViewModel @Inject constructor(
 
         when (val booksResource = getBooksById(GetBooksById.Params(response.books))) {
             is Resource.Data -> updateUi { _books.value = bookToTitledPairListView.map(booksResource.result) }
-            is Resource.Error -> updateUi { appEventBus.value = handle(resourceProvider, booksResource.repositoryError) }
+            is Resource.Error -> updateUi { appEventBus.value = booksResource.repositoryError.toAlert(resourceProvider) }
         }
     }
 }

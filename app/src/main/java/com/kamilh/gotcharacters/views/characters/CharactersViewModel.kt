@@ -2,7 +2,9 @@ package com.kamilh.gotcharacters.views.characters
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.kamilh.gotcharacters.R
 import com.kamilh.gotcharacters.base.ScopedViewModel
+import com.kamilh.gotcharacters.custom_views.AppToolbar
 import com.kamilh.gotcharacters.custom_views.ItemView
 import com.kamilh.gotcharacters.data.Character
 import com.kamilh.gotcharacters.data.Navigation
@@ -10,15 +12,20 @@ import com.kamilh.gotcharacters.data.PaginationRequest
 import com.kamilh.gotcharacters.data.PaginationResponse
 import com.kamilh.gotcharacters.data.mapper.CharacterToItemView
 import com.kamilh.gotcharacters.di.AppEventBus
+import com.kamilh.gotcharacters.extensions.appToolbarConfiguration
+import com.kamilh.gotcharacters.extensions.map
+import com.kamilh.gotcharacters.extensions.toAlert
 import com.kamilh.gotcharacters.interactors.GetCharacters
 import com.kamilh.gotcharacters.repository.Resource
 import com.kamilh.gotcharacters.util.AppDispatchers
 import com.kamilh.gotcharacters.util.ResourceProvider
+import com.kamilh.gotcharacters.util.navigation.StackSizeProvider
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class CharactersViewModel @Inject constructor(
     appDispatchers: AppDispatchers,
+    stackSizeProvider: StackSizeProvider,
     private val appEventBus: AppEventBus,
     private val resourceProvider: ResourceProvider,
     private val getCharacters: GetCharacters,
@@ -30,6 +37,13 @@ class CharactersViewModel @Inject constructor(
 
     val isLoading: LiveData<Boolean> = _isLoading
     val items: LiveData<List<ItemView.Configuration>> = _items
+    val appToolbar: LiveData<AppToolbar.Configuration> = stackSizeProvider.stackSize.map {
+        appToolbarConfiguration(
+            stackSize = it,
+            title = resourceProvider.getString(R.string.Characters_title),
+            onBackCallback = { appEventBus.value = Navigation.Main.BackButtonClicked }
+        )
+    }
 
     private val firstPage = PaginationRequest(page = 1, list = listOf<Character>())
     private var response: PaginationResponse<Character>? = null
@@ -45,7 +59,7 @@ class CharactersViewModel @Inject constructor(
             updateUi { _isLoading.value = false }
             when (resource) {
                 is Resource.Data -> onResponse(resource.result)
-                is Resource.Error -> updateUi { appEventBus.value = handle(resourceProvider, resource.repositoryError) }
+                is Resource.Error -> updateUi { appEventBus.value = resource.repositoryError.toAlert(resourceProvider) }
             }
         }
     }
