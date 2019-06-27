@@ -10,7 +10,6 @@ internal abstract class ActivityModule {
     @ActivityScope
     @ContributesAndroidInjector(
         modules = [
-            MainActivityModule::class,
             MainActivityFragmentsModule::class,
             ViewModelModule::class
         ])

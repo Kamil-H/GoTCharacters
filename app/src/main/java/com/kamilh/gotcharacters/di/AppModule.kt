@@ -2,15 +2,19 @@ package com.kamilh.gotcharacters.di
 
 import android.content.Context
 import com.kamilh.gotcharacters.GoTCharacters
+import com.kamilh.gotcharacters.data.AppEvent
 import com.kamilh.gotcharacters.repository.books.BooksRemoteRepository
 import com.kamilh.gotcharacters.repository.books.BooksRepository
 import com.kamilh.gotcharacters.repository.characters.CharactersCachedRepository
 import com.kamilh.gotcharacters.repository.characters.CharactersRepository
 import com.kamilh.gotcharacters.util.AppDispatchers
+import com.kamilh.gotcharacters.util.SingleLiveEvent
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Singleton
+
+typealias AppEventBus = SingleLiveEvent<AppEvent>
 
 @Module(includes = [RemoteModule::class])
 object AppModule {
@@ -27,6 +31,9 @@ object AppModule {
         computation = Dispatchers.Default,
         main = Dispatchers.Main
     )
+
+    @Provides @JvmStatic @Singleton
+    fun provideAppEventBus() = AppEventBus()
 
     @Provides
     @JvmStatic
